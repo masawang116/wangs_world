@@ -1,6 +1,5 @@
 <?php
-    $path = __DIR__;
-    require_once $path . '\..\..\includes\connect_to_db.php';
+    require_once __DIR__ . '\..\..\includes\connect_to_db.php';
     
     $raw_name = basename($_SERVER['PHP_SELF']);
     $title = get_web_page_name_from_raw_name($db, $raw_name);

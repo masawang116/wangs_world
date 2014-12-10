@@ -16,8 +16,19 @@
  * returns mysqli_connect variable $db
  */
 
-function set_pages($db, $parent_id, $author_id, $name, $date_created, $date_last_modified, $content){
-    //todo parameterized query, stmt
+function update_pages($db, $page_id, $parent_id, $author_id, $name, $date_created, $date_last_modified, $content){
+    //todo parameterized query, stmt. then remove real escaoe string
+    $query = "UPDATE pages "
+            . "SET parent_id = '{$parent_id}', author_id = '{$author_id}', name = '{$name}', "
+            . "date_created = '{$date_created}', date_last_modified = '{$date_last_modified}', content = '{$content}'"
+            . "WHERE id = '{$page_id}'";
+
+    $result = mysqli_query($db, $query);
+    confirm_result($result);
+}
+
+function create_pages($db, $parent_id, $author_id, $name, $date_created, $date_last_modified, $content){
+    //todo parameterized query, stmt. then remove real escaoe string
     $query = "INSERT INTO pages "
             . "(parent_id, author_id, name, date_created, date_last_modified, content) VALUES "
             . "('{$parent_id}', '{$author_id}', '{$name}', '{$date_created}', '{$date_last_modified}', '{$content}')";
@@ -55,6 +66,11 @@ function get_index_filename(){
     return 'index.php';
 }
 
+/**
+ * returns the current filename -(not headers)
+ * 
+ * returns basename($_SERVER['PHP_SELF']);
+ */
 function get_filename(){
     return basename($_SERVER['PHP_SELF']);
 }
@@ -221,6 +237,16 @@ function get_page_name($db, $page_id)
 function get_page_content($db, $page_id)
 {       
     return get_id_from_id($db, 'pages', 'id', $page_id, 'content');        
+}
+
+function get_page_date_created($db, $page_id)
+{       
+    return get_id_from_id($db, 'pages', 'id', $page_id, 'date_created');        
+}
+
+function get_page_date_last_modified($db, $page_id)
+{       
+    return get_id_from_id($db, 'pages', 'id', $page_id, 'date_last_modified');        
 }
 
 /**

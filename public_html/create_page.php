@@ -16,11 +16,11 @@
 <?php
     if(isset($_POST['submit'])) {
         $parent_id = get_post_value('page_parent_id');
-        $author_id = get_post_value('author_id');
-        $name = mysqli_real_escape_string($db, get_post_value('name'));
+        $author_id = get_post_value('page_author_id');
+        $name = mysqli_real_escape_string($db, get_post_value('page_name'));
         $date_created = date('Y\-m\-d');
         $date_last_modified = date('Y\-m\-d');
-        $content = mysqli_real_escape_string($db, get_post_value('content'));
+        $content = mysqli_real_escape_string($db, get_post_value('page_content'));
 
         if(trim($name) == '') {
             $name = 'Untitled Page';
@@ -29,13 +29,13 @@
             $content = 'No content.';
         }
         
-        set_pages($db, $parent_id, $author_id, $name, $date_created, 
+        create_pages($db, $parent_id, $author_id, $name, $date_created, 
                 $date_last_modified, $content); {
-            
+      
         }
         
         $index_filename = get_index_filename();
-        $next_id = get_next_auto_increment_id($db, 'pages');
+        $next_id = get_next_auto_increment_id($db, 'pages') - 1;
         header('Location: ' . $index_filename . '?page_id=' . $next_id);
     }
     
@@ -48,24 +48,24 @@
 ?>
     
     <form action='<?php echo $filename; ?>' method='post'>
-        <label Parent page: </label>
+        <label> Parent page: </label>
         <br />
         <input disabled type ='text' value = '<?php echo $page_parent_name; ?>'>
         <input type ='hidden' name='page_parent_id' value ='<?php echo $page_parent_id; ?>'>
         
         <br />
         
-        <label for ='name'>Title: </label>
+        <label for ='page_name'>Title: </label>
         <br />
-        <input name ='name' type ='text' value = ''>
-        <br />
-        
-        <label for ='content'>Content: </label>
-        <br />
-        <textarea name ='content' rows='6' value = ''></textarea>
+        <input name ='page_name' type ='text' value = ''>
         <br />
         
-        <input hidden ='author_id' value ='1'>
+        <label for ='page_content'>Content: </label>
+        <br />
+        <textarea name ='page_content' rows='6'></textarea>
+        <br />
+        
+        <input hidden ='page_author_id' value ='1'>
         
         <input name ='submit' type='submit' value='Create Page'>
     </form>
